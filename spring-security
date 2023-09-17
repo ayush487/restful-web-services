@@ -1,0 +1,15 @@
+Spring Security
+~~~~~~~~~~~~~~~
+
+Filter Chains
+-------------
+
+1) All request should be authenticated.
+2) If a request is not authenticated, a webpage is shown.
+3) CSRF -> POST, PUT
+
+Configuration
+-------------
+
+Bean FilterChain
+----------------
