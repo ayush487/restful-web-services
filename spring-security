@@ -13,3 +13,11 @@ Configuration
 
 Bean FilterChain
 ----------------
+
+Basic Authentication
+--------------------
+Request sent should be in form of "Basic btoa(username+':'+password)"
+every request will have a header of "Authorization" whose value will be "Basic btoa(username+':'+password)"
+
+btoa -> Converts a String to Base64 encoding
+atob -> Reconverts the Encoded String to its initial form

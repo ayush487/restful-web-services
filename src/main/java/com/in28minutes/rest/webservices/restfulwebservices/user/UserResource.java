@@ -24,32 +24,32 @@ public class UserResource {
 
 	private UserRepository userRepository;
 	private PostRepository postRepository;
-	private UserDaoService userDaoService;
+//	private UserDaoService userDaoService;
 
-	public UserResource(UserRepository userRepository, PostRepository postRepository, UserDaoService userDaoService) {
+	public UserResource(UserRepository userRepository, PostRepository postRepository) {
 		super();
 		this.userRepository = userRepository;
 		this.postRepository = postRepository;
-		this.userDaoService = userDaoService;
+//		this.userDaoService = userDaoService;
 	}
 
 	@GetMapping("users")
 	public List<User> getAllUsers() {
-		return userDaoService.findAll();
-//		return userRepository.findAll();
+//		return userDaoService.findAll();
+		return userRepository.findAll();
 	}
 
 	@GetMapping("users/{id}")
 	public User getUserById(@PathVariable int id) {
-//		User user = userRepository.findById(id).orElse(null);
-		User user = userDaoService.findById(id);
-		if(user==null) {
-			throw new UserNotFoundException("id:"+id);
+		User user = userRepository.findById(id).orElse(null);
+//		User user = userDaoService.findById(id);
+		if (user == null) {
+			throw new UserNotFoundException("id:" + id);
 		}
-//		EntityModel<User> entityModel = EntityModel.of(user);
-//		
-//		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).getAllUsers());
-//		entityModel.add(link.withRel("all-users"));
+		EntityModel<User> entityModel = EntityModel.of(user);
+
+		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).getAllUsers());
+		entityModel.add(link.withRel("all-users"));
 //		
 		return user;
 	}
@@ -57,19 +57,18 @@ public class UserResource {
 	@PostMapping("users")
 	public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
 		System.out.println(user);
-//		User savedUser = userRepository.save(user);
-		User savedUser = userDaoService.save(user);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}")
-				.buildAndExpand(savedUser.getId())
+		User savedUser = userRepository.save(user);
+//		User savedUser = userDaoService.save(user);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId())
 				.toUri();
 		return ResponseEntity.created(location).build();
-		
+
 	}
 
 	@DeleteMapping("users/{id}")
 	public void deleteUser(@PathVariable int id) {
 		userRepository.deleteById(id);
+//		userDaoService.deleteById(id);
 	}
 
 	@GetMapping("users/{id}/posts")
